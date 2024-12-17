@@ -14,6 +14,10 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+app.get('/', (req, res) => {
+  res.send('Backend is running!');
+});
+
 // Connect to SQLite database
 const db = new sqlite3.Database('./users.db', (err) => {
   if (err) {
