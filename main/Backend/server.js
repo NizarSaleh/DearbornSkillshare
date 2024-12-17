@@ -404,9 +404,25 @@ app.post('/api/users', (req, res) => {
       console.error('Error saving user:', err.message);
       return res.status(500).json({ error: 'Failed to save user.' });
     }
-    res.json({ id: this.lastID, name, email, zipcode, skill1, skill2, skill3 });
+
+    // User created successfully, now generate a JWT token
+    const userId = this.lastID;
+    const userData = { id: userId, name, email };
+    const token = jwt.sign(userData, SECRET_KEY, { expiresIn: '1h' });
+
+    res.json({
+      id: userId,
+      name,
+      email,
+      zipcode,
+      skill1,
+      skill2,
+      skill3,
+      token
+    });
   });
 });
+
 
 
 app.post('/api/replies', authenticate, (req, res) => {
