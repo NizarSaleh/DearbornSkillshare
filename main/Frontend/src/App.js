@@ -20,6 +20,8 @@ function App() {
   const [replies, setReplies] = useState({});
   const [profileImage, setProfileImage] = useState(null);
 
+  const API_URL = 'https://dearbornskillshare.onrender.com';
+
   const adminCredentials = {
     email: "admin@example.com",
     password: "adminpass",
@@ -60,7 +62,7 @@ function App() {
   const handleDeleteReply = async (replyId, commentId) => {
     const token = localStorage.getItem('token'); // Auth token
     try {
-      await axios.delete(`http://localhost:5000/api/replies/${replyId}`, {
+      await axios.delete(`${API_URL}/api/replies/${replyId}`, {
         headers: {
           Authorization: `Bearer ${token}`, // Authorization header
         },
@@ -82,7 +84,7 @@ function App() {
   const fetchReplies = async (commentId) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`http://localhost:5000/api/replies/${commentId}`, {
+      const response = await axios.get(`${API_URL}/api/replies/${commentId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
   
@@ -101,7 +103,7 @@ function App() {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        'http://localhost:5000/api/replies',
+        `${API_URL}/api/replies`,
         { commentId, content: replyText },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -135,7 +137,7 @@ function App() {
   
   const handleLogin = async (email, password) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/login', { email, password });
+      const response = await axios.post(`${API_URL}/api/login`, { email, password });
       const { token } = response.data;
       localStorage.setItem('token', token);
   
@@ -154,7 +156,7 @@ function App() {
   const handleDeleteComment = async (commentId, postId) => {
     const token = localStorage.getItem('token');
     try {
-      await axios.delete(`http://localhost:5000/api/comments/${commentId}`, {
+      await axios.delete(`${API_URL}/api/comments/${commentId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
   
@@ -175,7 +177,7 @@ function App() {
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem('token'); // Retrieve the JWT token
-      const response = await axios.get('http://localhost:5000/api/users', {
+      const response = await axios.get(`${API_URL}/api/users`, {
         headers: {
           Authorization: `Bearer ${token}`, // Include Authorization header
         },
@@ -210,12 +212,12 @@ function App() {
   
     const token = localStorage.getItem('token');
     try {
-      await axios.post('http://localhost:5000/api/profile', formData, {
+      await axios.post(`${API_URL}/api/profile`, formData, {
         headers: { Authorization: `Bearer ${token}` },
       });
   
       // Re-fetch updated user data
-      const response = await axios.get(`http://localhost:5000/api/users/${loggedInUser.id}`, {
+      const response = await axios.get(`${API_URL}/api/users/${loggedInUser.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
   
@@ -231,7 +233,7 @@ function App() {
     const fetchUserProfile = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get(`http://localhost:5000/api/users/${loggedInUser.id}`, {
+        const response = await axios.get(`${API_URL}/api/users/${loggedInUser.id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setProfile({
@@ -256,7 +258,7 @@ function App() {
     try {
       const allComments = {};
       for (const post of categoryPosts) {
-        const response = await axios.get(`http://localhost:5000/api/comments/${post.id}`, {
+        const response = await axios.get(`${API_URL}/api/comments/${post.id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         allComments[post.id] = response.data;
@@ -271,7 +273,7 @@ function App() {
   const fetchPosts = async (category) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`http://localhost:5000/api/posts/${category}`, {
+      const response = await axios.get(`${API_URL}/api/posts/${category}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const categoryPosts = response.data;
@@ -316,7 +318,7 @@ function App() {
     const preloadPosts = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:5000/api/posts', {
+        const response = await axios.get(`${API_URL}/api/posts`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setPosts(
@@ -339,7 +341,7 @@ function App() {
   // Toggle user activation
   const toggleUserActivation = async (userId, currentStatus) => {
     try {
-      await axios.patch(`http://localhost:5000/api/users/${userId}`, {
+      await axios.patch(`${API_URL}/api/users/${userId}`, {
         isActive: !currentStatus,
       });
   
@@ -390,7 +392,7 @@ function App() {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('http://localhost:5000/api/posts', formData, {
+      const response = await axios.post(`${API_URL}/api/posts`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
@@ -427,7 +429,7 @@ function App() {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        'http://localhost:5000/api/comments',
+        `${API_URL}/api/comments`,
         { postId, content: commentText },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -449,7 +451,7 @@ function App() {
   const fetchComments = async (postId) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`http://localhost:5000/api/comments/${postId}`, {
+      const response = await axios.get(`${API_URL}/api/comments/${postId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
   
@@ -469,7 +471,7 @@ function App() {
 
     const token = localStorage.getItem('token');
     try {
-      await axios.delete(`http://localhost:5000/api/posts/${postId}`, {
+      await axios.delete(`${API_URL}/api/posts/${postId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -489,13 +491,13 @@ function App() {
     e.preventDefault();
     const formData = new FormData(e.target);
     const selectedSkills = Array.from(formData.getAll('skills'));
-
+  
     const [skill1, skill2, skill3] = [
       selectedSkills[0] || 'None',
       selectedSkills[1] || 'None',
       selectedSkills[2] || 'None',
     ];
-
+  
     const userData = {
       name: formData.get('name'),
       email: formData.get('email'),
@@ -505,16 +507,25 @@ function App() {
       skill2,
       skill3,
     };
-
+  
     try {
-      await axios.post('http://localhost:5000/api/users', userData);
-      alert('User registered successfully!');
-      setPage('community');
+      const response = await axios.post(`${API_URL}/api/users`, userData);
+      // Response now includes token
+      const { token } = response.data;
+      localStorage.setItem('token', token);
+  
+      const decoded = jwtDecode(token);
+      setLoggedInUser(decoded);
+      setIsLoggedIn(true);
+  
+      alert('User registered and logged in successfully!');
+      setPage('community'); // Navigate to community page
     } catch (error) {
       console.error('Error during sign-up:', error);
       alert('Failed to register user.');
     }
   };
+  
 
   return (
     <div className="app">
@@ -570,10 +581,10 @@ function App() {
             <section className="about-section">
               <h1>About Us</h1>
               <p>
-                Welcome to SkillShare Dearborn! Our platform is dedicated to fostering community connections and promoting sustainability by addressing the growing need for accessible repair solutions in Dearborn. We provide an open forum where residents can seek advice, share repair knowledge, and connect with local businesses for trusted repair services.
+                Welcome to SkillShare Dearborn! Our platform is dedicated to fostering community connections and promoting sustainability by addressing the growing need for accessible repair solutions in Dearborn.
               </p>
               <p>
-                At SkillShare Dearborn, we aim to reduce waste, encourage the sharing of repair skills, and strengthen relationships within our community. By empowering residents to collaborate and support one another, we help promote sustainability, reduce waste by promoting repairs over replacements, invest in the local economy, and build a stronger, more connected Dearborn by sharing our knowledge. Join us in making a difference—one repair at a time!
+                We help promote sustainability, reduce waste by encouraging repairs over replacements, invest in the local economy, and build a stronger, more connected Dearborn by sharing knowledge. Join us in making a difference—one repair at a time!
               </p>
             </section>
           </div>
@@ -716,7 +727,7 @@ function App() {
 
                     {post.files?.length > 0 ? (
                       <img
-                        src={`http://localhost:5000${post.files[currentImageIndex[post.id] || 0]}`}
+                        src={`${API_URL}${post.files[currentImageIndex[post.id] || 0]}`}
                         alt="Post content"
                         className="post-image"
                         onError={(e) => {
@@ -930,82 +941,74 @@ function App() {
         </main>
       )}
 
-{page === 'signup' && (
-  <main className="main-content signup-form">
-    <div className="logo">
-      <img src={logo} alt="SkillShare Dearborn Logo" />
-    </div>
-    {/* Removed <h1>Sign Up Here!</h1> and all text above the input fields */}
-
-    <form onSubmit={handleSignUp} className="signup-form">
-      <div className="form-group">
-        {/* Removed the label for "Full Name" */}
-        <input
-          type="text"
-          id="name"
-          name="name"
-          placeholder="Full Name"
-          className="form-input"
-          required
-        />
-      </div>
-      <div className="form-group">
-        {/* Removed the label for "Email Address" */}
-        <input
-          type="email"
-          id="email"
-          name="email"
-          placeholder="Email Address"
-          className="form-input"
-          required
-        />
-      </div>
-      <div className="form-group">
-        {/* Removed the label for "Password" */}
-        <input
-          type="password"
-          id="password"
-          name="password"
-          placeholder="Password"
-          className="form-input"
-          required
-        />
-      </div>
-      <div className="form-group">
-        {/* Removed the label for "Zipcode" */}
-        <input
-          type="text"
-          id="zipcode"
-          name="zipcode"
-          placeholder="Zipcode"
-          className="form-input"
-          required
-        />
-      </div>
-      <div className="form-group">
-        {/* Removed the "Select Your Skills" label and any descriptive text */}
-        <div>
-          <label>
-            <input type="checkbox" name="skills" value="Mechanics" /> Mechanics
-          </label>
-        </div>
-        <div>
-          <label>
-            <input type="checkbox" name="skills" value="Electronics" /> Electronics
-          </label>
-        </div>
-        <div>
-          <label>
-            <input type="checkbox" name="skills" value="Home Appliances" /> Home Appliances
-          </label>
-        </div>
-      </div>
-      <button type="submit" className="button form-submit-button">Register</button>
-    </form>
-    <button className="button back-button" onClick={() => handleNavigate('home')}>Back</button>
-  </main>
-)}
-
+      {page === 'signup' && (
+        <main className="main-content signup-form">
+          <div className="logo">
+            <img src={logo} alt="SkillShare Dearborn Logo" />
+          </div>
+          <form onSubmit={handleSignUp} className="signup-form">
+            <div className="form-group">
+              <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Full Name"
+                className="form-input"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Email Address"
+                className="form-input"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Password"
+                className="form-input"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <input
+                type="text"
+                id="zipcode"
+                name="zipcode"
+                placeholder="Zipcode"
+                className="form-input"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <div>
+                <label>
+                  <input type="checkbox" name="skills" value="Mechanics" /> Mechanics
+                </label>
+              </div>
+              <div>
+                <label>
+                  <input type="checkbox" name="skills" value="Electronics" /> Electronics
+                </label>
+              </div>
+              <div>
+                <label>
+                  <input type="checkbox" name="skills" value="Home Appliances" /> Home Appliances
+                </label>
+              </div>
+            </div>
+            <button type="submit" className="button form-submit-button">Register</button>
+          </form>
+          <button className="button back-button" onClick={() => handleNavigate('home')}>Back</button>
+        </main>
+      )}
 
       {page === 'login' && (
         <main className="main-content login-form">
